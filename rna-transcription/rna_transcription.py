@@ -21,11 +21,10 @@ def to_rna(dna_strand):
     rna_strand = ''
     for x in dna_strand:
         if x not in valid_input:
-            raise ValueError('Fout')
-        else:
-            for char in dna_strand:
-                rna_strand += coding[char]
-            return rna_strand
+            raise ValueError('Invalid dna strand')
 
 
-print(to_rna('BAXXXCTTAA'))
+    for char in dna_strand:
+        rna_strand += coding[char]
+    return rna_strand
+
