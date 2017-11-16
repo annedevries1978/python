@@ -16,8 +16,6 @@ def sum_of_squares(number):
 
 
 def difference(number):
-    x = square_of_sum(number)
-    y = sum_of_squares(number)
-    return x - y
+    return square_of_sum(number) - sum_of_squares(number)
 
 
