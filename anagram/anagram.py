@@ -1,12 +1,10 @@
-import re
-
 def detect_anagrams(word, candidates):
     matches = []
     # loop over items in candidates
     for item in candidates:
         temp_word = word.lower()
-        # only compare if length are equal
         item_to_test = item.lower()
+        # only compare if length are equal
         if temp_word != item_to_test and len(item) == len(word):
 
             # Loop over letters in item
