@@ -20,15 +20,25 @@ class Robot(object):
         self.x = x
         self.y = y
 
-
     def turn_left(self):
-        self.bearing -= 1
-        return self.bearing
-
+        if self.bearing == NORTH:
+            self.bearing = WEST
+        elif self.bearing == WEST:
+            self.bearing = SOUTH
+        elif self.bearing == SOUTH:
+            self.bearing = EAST
+        else:
+            self.bearing = NORTH
 
     def turn_right(self):
-        self.bearing += 1
-        return self.bearing
+        if self.bearing == NORTH:
+            self.bearing = EAST
+        elif self.bearing == EAST:
+            self.bearing = SOUTH
+        elif self.bearing == SOUTH:
+            self.bearing = WEST
+        else:
+            self.bearing = NORTH
 
     def advance(self):
         if self.bearing == EAST:
@@ -38,11 +48,17 @@ class Robot(object):
         elif self.bearing == SOUTH:
             self.y -= 1
         else:
-            self.bearing == WEST
             self.x -= 1
 
     def simulate(self, letters):
-        pass
+        for letter in letters:
+            if letter == 'A':
+                self.advance()
+            elif letter == 'L':
+                self.turn_left()
+            else:
+                self.turn_right()
+
 
     @property
     def coordinates(self):
