@@ -21,24 +21,16 @@ class Robot(object):
         self.y = y
 
     def turn_left(self):
-        if self.bearing == NORTH:
-            self.bearing = WEST
-        elif self.bearing == WEST:
-            self.bearing = SOUTH
-        elif self.bearing == SOUTH:
-            self.bearing = EAST
-        else:
-            self.bearing = NORTH
+        self.bearing = {NORTH: WEST,
+                        WEST: SOUTH,
+                        SOUTH: EAST,
+                        EAST: NORTH}[self.bearing]
 
     def turn_right(self):
-        if self.bearing == NORTH:
-            self.bearing = EAST
-        elif self.bearing == EAST:
-            self.bearing = SOUTH
-        elif self.bearing == SOUTH:
-            self.bearing = WEST
-        else:
-            self.bearing = NORTH
+        self.bearing = {NORTH: EAST,
+                        EAST: SOUTH,
+                        SOUTH: WEST,
+                        WEST: NORTH}[self.bearing]
 
     def advance(self):
         if self.bearing == EAST:
