@@ -17,6 +17,8 @@ def say(number):
                    90: 'ninety'
                    }
 
+    words = ['trillion', 'billion', 'million', 'thousand']
+
     if number == 0:
         return 'zero'
     elif number in ten_numbers.keys():
@@ -31,15 +33,24 @@ def say(number):
 
 
 def number_split(number):
-    pass
+    number_split_list = []
+    n = True
+    while n is True:
+        x, y = divmod(number, 1000)
+        number_split_list.append(y)
+        number = x
+        if len(str(x)) <= 3:
+            number_split_list.append(x)
+            n = False
+        else:
+            number_split(number)
+    number_split_list.reverse()
+    return number_split_list
 
-print(say(13))
-print(say(0))
-print(say(5))
-print(say(42))
-print(say(50))
-print(say(-1))
-print(say(100))
+
+print(number_split(45))
+
+
 
 
 
