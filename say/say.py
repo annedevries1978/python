@@ -1,10 +1,10 @@
 def say(number):
     string = ""
-    number = scale(number)
+    number = insert_scale(number)
     for num in number:
         if isinstance(num, int):
             if len(str(num)) < 3:
-                string += basic_num(num) + ' '
+                string += basic_num(num)
             else:
                 x, y = divmod(num, 100)
                 if y == 0:
@@ -62,44 +62,34 @@ def number_split(number):
             number_split(number)
 
     number_split_list.reverse()
-    if number_split_list[0] == 0:
-        number_split_list.pop(0)
+
+    #if number_split_list[0] == 0:
+    #    number_split_list.pop(0)
 
     return number_split_list
 
 
-def scale(number):
+def insert_scale(number):
     num_list = number_split(number)
+    out = []
     words = ['trillion', 'billion', 'million', 'thousand']
+    start_point = 4 - len(num_list)
     if len(num_list) == 1:
-        return num_list
-
-    if len(num_list) == 2:
-        num_list.insert(1,words[3])
-    elif len(num_list) == 3:
-        num_list.insert(1, words[2])
-        num_list.insert(3, words[3])
-    elif len(num_list) == 4:
-        num_list.insert(1, words[1])
-        num_list.insert(3, words[2])
-        num_list.insert(5, words[3])
+        out = num_list
+        return out
+    for x, y in enumerate(num_list):
+        if x < len(num_list)-1:
+            start_point += 1
+            if y != 0:
+                out.append(y)
+                out.append(words[start_point])
+        else:
+            out.append(y)
+    if out[-1] == 0:
+        return out[:-1]
     else:
-        num_list.insert(1, words[0])
-        num_list.insert(3, words[1])
-        num_list.insert(5, words[2])
-        num_list.insert(7, words[3])
+        return out
 
-    return num_list
 
-print(basic_num(45))
-print(number_split(1000))
-
-print(say(1234567890))
-print(say(100900))
-print(say(1000))
-print(say(1))
-print(say(0))
-print(say(1234))
-print(say(1000000))
-
+print(say(1000002))
 
