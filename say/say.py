@@ -1,20 +1,29 @@
 def say(number):
-    string = ""
-    number = insert_scale(number)
-    for num in number:
-        if isinstance(num, int):
-            if len(str(num)) < 3:
-                string += basic_num(num)
-            else:
-                x, y = divmod(num, 100)
-                if y == 0:
-                    string += str(basic_num(x)) + ' hundred '
+    number = int(number)
+    if 0 <= number < 1000000000000:
+        string = []
+        number = insert_scale(number)
+        for pos, num in enumerate(number):
+            if isinstance(num, int):
+                if len(str(num)) < 3 and pos == len(number)-1 and len(number) > 1:
+                    string.append('and ' + basic_num(num))
+                elif len(str(num)) < 3:
+                    string.append(basic_num(num))
                 else:
-                    string += str(basic_num(x)) + ' hundred and ' + basic_num(y) + ' '
+                    x, y = divmod(num, 100)
+                    if y == 0:
+                        string.append(str(basic_num(x)) + ' hundred')
+                    else:
+                        string.append(str(basic_num(x)) + ' hundred and ' + basic_num(y))
 
-        else:
-            string += num + ' '
-    return string
+            else:
+                string.append(num)
+        s = " "
+        text = s.join(string)
+
+        return text
+    else:
+        raise ValueError
 
 
 def basic_num(number):
@@ -62,10 +71,6 @@ def number_split(number):
             number_split(number)
 
     number_split_list.reverse()
-
-    #if number_split_list[0] == 0:
-    #    number_split_list.pop(0)
-
     return number_split_list
 
 
@@ -74,9 +79,6 @@ def insert_scale(number):
     out = []
     words = ['trillion', 'billion', 'million', 'thousand']
     start_point = 4 - len(num_list)
-    if len(num_list) == 1:
-        out = num_list
-        return out
     for x, y in enumerate(num_list):
         if x < len(num_list)-1:
             start_point += 1
@@ -85,11 +87,7 @@ def insert_scale(number):
                 out.append(words[start_point])
         else:
             out.append(y)
-    if out[-1] == 0:
+    if len(out) > 1 and out[-1] == 0:
         return out[:-1]
     else:
         return out
-
-
-print(say(1000002))
-
