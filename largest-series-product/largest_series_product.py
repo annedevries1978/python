@@ -9,7 +9,6 @@ def largest_product(series, size):
     else:
         for x, y in enumerate(series):
             if size == len(series[start:end]):  # series length equals size
-                # print(x, x+1)
                 result = series[start:end]
                 end += 1
                 start += 1
