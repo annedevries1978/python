@@ -18,8 +18,7 @@ def largest_product(series, size):
 
 
 def multiply_nested_list(nested_list):
-    result = [product(i) for i in nested_list]
-    return max(result)
+    return max([product(i) for i in nested_list])
 
 
 def product(num_list):
