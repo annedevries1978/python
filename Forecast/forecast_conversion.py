@@ -37,7 +37,6 @@ def get_new_line_items():
     return start_line_new_item
 
 
-# TODO over de regels loopen tot aan nieuw item. Item nummers kopieren in neuwe lijst
 def get_item_numbers():
     #  per nieuwe regel de item nummers ophalen.
     items = []
@@ -60,9 +59,12 @@ def forecast_values():
     with open('PSPSCD75RX (2).txt', newline='') as f:
         for line in f:
             line_counter += 1
-            if 15 < line_counter < 36:
-                forecast_data.append(get_item_numbers()[0] + [line[155:163]])
+            for x in range(len(new_line_number)):
+                if new_line_number[1] <= line_counter < new_line_number[2]:
+                    forecast_data.append(get_item_numbers()[0] + [line[155:163]] + [line[165:173]])
 
+    for x in range(len(new_line_number)):
+        print(x)
 
 get_column_headers()
 forecast_values()
