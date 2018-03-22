@@ -9,6 +9,26 @@ pp = pprint.PrettyPrinter()
 start_line = 14  # start regel vanaf de data gelezen moet worden
 last_line = 65  # laatste regel
 forecast_data = []  # list om de data in op te slaan
+file = 'PSPSCD75RX (2).txt'
+
+
+def get_number_of_pages():
+    # returns a dict with page number as key and line number as value
+    line_counter = 0
+    page_counter = 0
+    page = {}
+    with open(file, newline='') as f:
+        for line in f:
+            line_counter += 1
+            if line[135:139] == 'Page':
+                page_counter += 1
+                page[page_counter] = line_counter
+    return page
+
+print(get_number_of_pages())
+
+def check_next_page_is_new_item():
+    pass
 
 
 def get_column_headers():
@@ -65,10 +85,4 @@ def forecast_values():
                         forecast_data.append(get_item_numbers()[x] + [line[155:163]] + [line[165:173]])
 
 
-print(get_new_line_items())
-print(len(get_item_numbers()))
-pp.pprint(get_item_numbers())
-get_column_headers()
-forecast_values()
-pp.pprint(forecast_data)
 
