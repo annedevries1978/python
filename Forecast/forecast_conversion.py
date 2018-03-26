@@ -1,8 +1,9 @@
-import csv
+
 import pprint
 '''
     Data uit forecast bestand van Baxi omzetten naar een voor SAP leesbaar format
     De kolomnamen beginnen bij regel 14
+    Eerste item begint op regel 15
     Vanaf regel 67 begint een nieuwe pagina
 '''
 pp = pprint.PrettyPrinter()
@@ -14,21 +15,19 @@ file = 'PSPSCD75RX (2).txt'
 
 def get_number_of_pages():
     # returns a dict with page number as key and line number as value
-    line_counter = 0
     page_counter = 0
     page = {}
     with open(file, newline='') as f:
-        for line in f:
-            line_counter += 1
+        for i, line in enumerate(f, start=1):
             if line[135:139] == 'Page':
                 page_counter += 1
-                page[page_counter] = line_counter
+                page[page_counter] = i
     return page
 
-print(get_number_of_pages())
-
-def check_next_page_is_new_item():
-    pass
+def print_number_of_pages():
+    page_dict = get_number_of_pages()
+    for key in page_dict.keys():
+        print("Pagina start:", page_dict[key])
 
 
 def get_column_headers():
@@ -42,6 +41,7 @@ def get_column_headers():
                 aantallen = line[155:163]
                 datum = line[165:173]
                 forecast_data.append([customer_item, rubitech_item, aantallen, datum])
+                return [customer_item, rubitech_item, aantallen, datum]
 
 
 def get_new_line_items():
@@ -54,6 +54,8 @@ def get_new_line_items():
             if line == ' \r\n' and start_line < line_counter < last_line:
                 start_line_new_item.append(line_counter + 1)
 
+    for x in start_line_new_item:
+        print("Nieuw item startregel:", x)
     return start_line_new_item
 
 
@@ -85,4 +87,7 @@ def forecast_values():
                         forecast_data.append(get_item_numbers()[x] + [line[155:163]] + [line[165:173]])
 
 
+print("De headers zijn\n", get_column_headers())
+print_number_of_pages()
 
+print("Dit zijn de item nummers", get_item_numbers())
