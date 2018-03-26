@@ -14,20 +14,14 @@ file = 'PSPSCD75RX (2).txt'
 
 
 def get_number_of_pages():
-    # returns a dict with page number as key and line number as value
+    # returns a list with line number where new page data starts
     page_counter = 0
-    page = {}
+    page = []
     with open(file, newline='') as f:
         for i, line in enumerate(f, start=1):
             if line[135:139] == 'Page':
-                page_counter += 1
-                page[page_counter] = i
+                page.append(i+12)
     return page
-
-def print_number_of_pages():
-    page_dict = get_number_of_pages()
-    for key in page_dict.keys():
-        print("Pagina start:", page_dict[key])
 
 
 def get_column_headers():
@@ -49,11 +43,9 @@ def get_new_line_items():
     line_counter = 0
     start_line_new_item = [15]  # regel met eerste item
     with open('PSPSCD75RX (2).txt', newline='') as f:
-        for line in f:
-            line_counter += 1
-            if line == ' \r\n' and start_line < line_counter < last_line:
-                start_line_new_item.append(line_counter + 1)
-
+        for i, line in enumerate(f):
+            if line == ' \r\n' and start_line < i < last_line:
+                start_line_new_item.append(i)
     for x in start_line_new_item:
         print("Nieuw item startregel:", x)
     return start_line_new_item
@@ -88,6 +80,5 @@ def forecast_values():
 
 
 print("De headers zijn\n", get_column_headers())
-print_number_of_pages()
-
+print(get_number_of_pages())
 print("Dit zijn de item nummers", get_item_numbers())
