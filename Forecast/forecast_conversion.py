@@ -8,7 +8,7 @@ import pprint
 '''
 pp = pprint.PrettyPrinter()
 start_line = 14  # start regel vanaf de data gelezen moet worden
-last_line = 65  # laatste regel
+last_line = 102  # laatste regel
 forecast_data = []  # list om de data in op te slaan
 file = 'PSPSCD75RX (2).txt'
 
@@ -40,12 +40,11 @@ def get_column_headers():
 
 def get_new_line_items():
     # geeft de regelnummers waarin een nieuw item begint
-    line_counter = 0
     start_line_new_item = [15]  # regel met eerste item
     with open('PSPSCD75RX (2).txt', newline='') as f:
-        for i, line in enumerate(f):
-            if line == ' \r\n' and start_line < i < last_line:
-                start_line_new_item.append(i)
+        for i, line in enumerate(f, start=1):
+            if line == ' \r\n' and start_line < i:
+                start_line_new_item.append(i+1)
     for x in start_line_new_item:
         print("Nieuw item startregel:", x)
     return start_line_new_item
