@@ -97,9 +97,10 @@ def create_upload():
     adjust_file()
 
 
-create_upload()
+
 
 def create_csv():
+    create_upload()
     with open(upload_file, newline='') as u:
         with open("csv_file.txt",'w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file, dialect='excel-tab')
