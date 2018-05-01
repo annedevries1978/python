@@ -1,11 +1,12 @@
-import csv
+import csv, itertools
 
-file = 'PSPSCD75RX (1).txt'
+file = 'PSPSCD75RX (2).txt'
 target = 'target.txt'
 upload_file = 'upload.txt'
 
 
 def get_last_line():
+    # return last line of file
     last_line = 0
     with open(file, newline='') as f:
         for i, line in enumerate(f, start=1):
@@ -23,21 +24,36 @@ def get_number_of_pages():
     return page
 
 
-def create_file():
-    # works only for 2 pages
-    # TODO: more than 2 pages
+def line_start_numbers():
+    # return a list with where the lines of the pages start
     page_list = get_number_of_pages()
-    with open(file, newline='') as f:
-        with open(target, 'w') as t:
-            for i, line in enumerate(f, start=1):
-                if 'End of Report' not in line and line != ' \r\n':
-                    if i > page_list[0]+10 and i < page_list[1]:
-                        t.write(line)
-                    elif i > page_list[1] + 11:
+    start_lines = []
+    for i in page_list:
+        if i == 3:
+            start_lines.append(i + 10)
+        else:
+            start_lines.append(i + 11)
+
+    return start_lines
+
+
+def clear_target():
+    open('target.txt', 'w').close()
+
+
+def read_page():
+    clear_target()
+    line_start = line_start_numbers()
+    for line_number in line_start:
+        with open(file, newline='') as f:
+            with open(target, 'a') as t:
+                for line in itertools.islice(f, line_number, line_number+51):
+                    if 'End of Report' not in line and line != ' \r\n':
                         t.write(line)
 
+
 def adjust_file():
-    # add item numers to lines with only quantities
+    # add item numbers to lines with only quantities
     with open(target, newline='') as t:
         with open(upload_file, 'w') as u:
             item_line = ""
@@ -51,6 +67,7 @@ def adjust_file():
 
 
 def get_number_of_items():
+    # Returns a list with all Rubitech item numbers
     items = []
     with open(target, newline='') as t:
         for line in t:
@@ -60,7 +77,7 @@ def get_number_of_items():
 
 
 def create_upload():
-    lines = 20 * "="
+    lines = 30 * "="
     print(lines)
     pages = get_number_of_pages()
     print("Pages start at lines:")
@@ -70,7 +87,7 @@ def create_upload():
     print(lines)
     print("Last line is:", get_last_line())
     print(lines)
-    create_file()
+    read_page()
     items = get_number_of_items()
     print("Items\n",lines, sep='')
     for i, item in enumerate(items):
