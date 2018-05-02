@@ -40,7 +40,6 @@ def line_start_numbers():
 
 
 def clear_target():
-
     open('target.txt', 'w').close()
     # open and closes target file so it is empty
 
@@ -100,7 +99,6 @@ def create_upload():
     for i, item in enumerate(items):
         if i  > 0:
             print(i, item)
-
     adjust_file()
 
 
