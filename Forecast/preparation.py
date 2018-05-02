@@ -1,6 +1,6 @@
 import csv, itertools
 
-file = 'PSPSCD75RX (2).txt'
+file = 'PSPSCD75RX (3).txt'
 target = 'target.txt'
 upload_file = 'upload.txt'
 
@@ -16,6 +16,7 @@ def get_last_line():
 
 def get_number_of_pages():
     # returns a list with line number where new page data starts
+    # look for Page in in line
     page = []
     with open(file, newline='') as f:
         for i, line in enumerate(f, start=1):
@@ -26,6 +27,7 @@ def get_number_of_pages():
 
 def line_start_numbers():
     # return a list with where the lines of the pages start
+    # first page is +10 because we want the colomn headers to be loaded
     page_list = get_number_of_pages()
     start_lines = []
     for i in page_list:
@@ -38,10 +40,16 @@ def line_start_numbers():
 
 
 def clear_target():
+
     open('target.txt', 'w').close()
+    # open and closes target file so it is empty
 
 
 def read_page():
+    # read all lines from the pages.
+    # starts reading at the line from line_start_numbers()
+    # After the start line a maximum of 51 lines contain data.
+    # Data is appended to the target file
     clear_target()
     line_start = line_start_numbers()
     for line_number in line_start:
@@ -58,7 +66,6 @@ def adjust_file():
         with open(upload_file, 'w') as u:
             item_line = ""
             for line in t:
-
                 if line[:1] != " ":
                     u.write(line)
                     item_line = line
@@ -97,14 +104,14 @@ def create_upload():
     adjust_file()
 
 
-
-
 def create_csv():
+    # create a tab delimited text file from upload_file
     create_upload()
     with open(upload_file, newline='') as u:
         with open("csv_file.txt",'w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file, dialect='excel-tab')
             for line in u:
                 csv_writer.writerow([line[16:46], line[155:163], line[165:173]])
+
 
 create_csv()
